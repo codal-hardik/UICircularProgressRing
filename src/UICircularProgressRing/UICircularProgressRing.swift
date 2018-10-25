@@ -257,9 +257,6 @@ fileprivate extension CALayer {
     @objc open var ringStyle: UICircularProgressRingStyle = .inside {
         didSet {
             ringLayer.ringStyle = ringStyle
-            if ringStyle != .bordered {
-                outerBorderWidth = 0
-            }
         }
     }
 
@@ -830,14 +827,18 @@ fileprivate extension CALayer {
      The type of animation function the ring view will use
      
      ## Important ##
-     Default = .easeInEaseOut
+     Default = kCAMediaTimingFunctionEaseIn
+     
+     String should be from kCAMediaTimingFunction_____
+     
+     Only used when calling .setValue(animated: true)
      
      ## Author
      Luis Padron
      */
-    @objc open var animationTimingFunction: CAMediaTimingFunctionName = .easeInEaseOut {
+    @objc open var animationStyle: String = kCAMediaTimingFunctionEaseIn {
         didSet {
-            ringLayer.animationTimingFunction = animationTimingFunction
+            ringLayer.animationStyle = animationStyle
         }
     }
 
@@ -1005,12 +1006,12 @@ fileprivate extension CALayer {
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(restoreProgress),
-                                               name: UIApplication.willEnterForegroundNotification,
+                                               name: .UIApplicationWillEnterForeground,
                                                object: nil)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(snapshotProgress),
-                                               name: UIApplication.willResignActiveNotification,
+                                               name: .UIApplicationWillResignActive,
                                                object: nil)
     }
 
